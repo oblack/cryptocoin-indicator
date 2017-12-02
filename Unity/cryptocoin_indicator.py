@@ -97,7 +97,7 @@ class LiteBitExchange(Exchange):
                 return round(Decimal(float(price) * json_eur["rates"]["USD"]), cryptocoin.round_number)
 
             # Return eur price
-            elif currency == 'EUR':
+            elif currency == 'BGN':
                 return round(Decimal(price), cryptocoin.round_number)
         else:
             return 'CC not supported'
@@ -132,13 +132,13 @@ class CoinmarketcapExchange(Exchange):
 
             if currency == 'USD':
                 return round(Decimal(json_obj[0]['price_usd']), cryptocoin.round_number)
-            elif currency == 'EUR':
-                return round(Decimal(json_obj[0]['price_eur']), cryptocoin.round_number)
+            elif currency == 'BGN':
+                return round(Decimal(json_obj[0]['price_bgn']), cryptocoin.round_number)
         else:
             return 'CC not supported'
 
 class ExchangeApp(object):
-    coinmarketcap = CoinmarketcapExchange("Coinmarketcap.com", "https://api.coinmarketcap.com/v1/ticker/", '/?convert=EUR')
+    coinmarketcap = CoinmarketcapExchange("Coinmarketcap.com", "https://api.coinmarketcap.com/v1/ticker/", '/?convert=BGN')
     litebit = LiteBitExchange("LiteBit.eu", "https://www.litebit.eu/requests/jsonp.php?call=")
 
     exchange_list = []
@@ -176,7 +176,7 @@ class ExchangeApp(object):
 
     def __init__(self):
         self.current_exchange = self.coinmarketcap
-        self.currency = 'EUR'
+        self.currency = 'BGN'
         self.current_cryptocoin = self.dogecoin
 
     def set_exchange(self, source, new_exchange):
@@ -217,8 +217,8 @@ class ExchangeApp(object):
         #    cc_price = cc_price * 1000
 
         # Set the new label
-        if self.currency == "EUR":
-            indicator.set_label('€ ' + str(cc_price), "100%")
+        if self.currency == "BGN":
+            indicator.set_label(str(cc_price) + ' лв', "100%")
         elif self.currency == "USD":
             indicator.set_label('$ ' + str(cc_price), "100%")
         else:
@@ -246,7 +246,7 @@ class Gui(object):
         global indicator
         indicator = appindicator.Indicator.new(APPINDICATOR_ID, self.exchange_app.dogecoin.icon, appindicator.IndicatorCategory.SYSTEM_SERVICES)
         indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
-        indicator.set_label('€ *.****', '100%')
+        indicator.set_label('*.****', '100%')
 
         # Set the menu of the indicator (default: gtk.Menu())
         indicator.set_menu(self.build_menu())
@@ -307,14 +307,14 @@ class Gui(object):
             item_radio_exchange_list[x].connect('activate', self.exchange_app.set_exchange, self.exchange_app.exchange_list[x])
 
         ######## CURRENCY ########
-        item_radio_eur = gtk.RadioMenuItem('EUR (€)')
+        item_radio_eur = gtk.RadioMenuItem('BGN (лв)')
         item_radio_usd = gtk.RadioMenuItem('USD ($)')
         item_radio_usd.set_property('group', item_radio_eur)
 
         # Set active radio buttons
         item_radio_eur.set_active(True)
 
-        item_radio_eur.connect("activate", self.exchange_app.set_currency, 'EUR')
+        item_radio_eur.connect("activate", self.exchange_app.set_currency, 'BGN')
         item_radio_usd.connect("activate", self.exchange_app.set_currency, 'USD')
 
         ######## ABOUT ##############
