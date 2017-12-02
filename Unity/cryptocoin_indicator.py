@@ -177,7 +177,7 @@ class ExchangeApp(object):
     def __init__(self):
         self.current_exchange = self.coinmarketcap
         self.currency = 'BGN'
-        self.current_cryptocoin = self.dogecoin
+        self.current_cryptocoin = self.bitcoin
 
     def set_exchange(self, source, new_exchange):
         if source.get_active():
@@ -244,7 +244,7 @@ class Gui(object):
     def __init__(self):
         # Applet icon
         global indicator
-        indicator = appindicator.Indicator.new(APPINDICATOR_ID, self.exchange_app.dogecoin.icon, appindicator.IndicatorCategory.SYSTEM_SERVICES)
+        indicator = appindicator.Indicator.new(APPINDICATOR_ID, self.exchange_app.bitcoin.icon, appindicator.IndicatorCategory.SYSTEM_SERVICES)
         indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         indicator.set_label('*.****', '100%')
 
@@ -283,7 +283,7 @@ class Gui(object):
 
         # Set dogecoin active
         for item_radio_cc in item_radio_cc_list:
-            if item_radio_cc.get_label() == self.exchange_app.dogecoin.name:
+            if item_radio_cc.get_label() == self.exchange_app.bitcoin.name:
                 item_radio_cc.set_active(True)
 
         for x in range(0, len(item_radio_cc_list)):
